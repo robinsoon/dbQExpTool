@@ -45,4 +45,6 @@
 	- 查询语法为数据查询范围的模板，决定了导出数据量和内容形式。查询视图是能否通过平台审核的关键。由于SQL语句非常长，双击将放大显示。
 	- 统计语句可作为查错参考载入执行日志。
 
+详情见测试截图:<br/>
+![image](https://github.com/robinsoon/dbQExpTool/blob/master/%E4%BB%BB%E5%8A%A1%E5%AF%BC%E5%87%BA%E8%BF%87%E7%A8%8B%E5%9B%BE.png)
 -----
