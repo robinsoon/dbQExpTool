@@ -332,7 +332,7 @@ func main() {
 	}
 
 	chMsg = make(chan string)
-	//多线程按顺序处理
+	//多线程 并发执行
 	for i := 0; i < 10; i++ {
 
 		if task1.query[i] == "" || task1.file[i] == "" || task1.dotype[i] == "" {
@@ -346,15 +346,22 @@ func main() {
 		if task1.dotype[i] == "xlsx" {
 			go doExcel(db, task1.query[i], task1.file[i], i)
 			//消息管道同步状态
-			result = <-chMsg
+			//result = <-chMsg
 		} else {
 			go docsv(db, task1.query[i], task1.file[i], i)
 			//消息管道同步状态
-			result = <-chMsg
+			//result = <-chMsg
 		}
 
 	}
-
+	//并发执行结果---等待执行完毕
+	for i := 0; i < 10; i++ {
+		if task1.query[i] == "" || task1.file[i] == "" || task1.dotype[i] == "" {
+			continue
+		}
+		//消息管道同步状态,和任务数有关
+		result = <-chMsg
+	}
 	uiPrograss1.SetValue(100)
 	uiBtn1.SetText("  开始  ")
 	uiBtn1.Disable()
