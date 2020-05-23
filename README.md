@@ -46,5 +46,8 @@
 	- 统计语句可作为查错参考载入执行日志。
 
 详情见测试截图:<br/>
+- 启动任务
+![image](https://raw.githubusercontent.com/robinsoon/dbQExpTool/master/%E4%BB%BB%E5%8A%A1%E5%AF%BC%E5%87%BA%E8%BF%87%E7%A8%8B01.png)
+- 执行完成
 ![image](https://github.com/robinsoon/dbQExpTool/blob/master/%E4%BB%BB%E5%8A%A1%E5%AF%BC%E5%87%BA%E8%BF%87%E7%A8%8B%E5%9B%BE.png)
 -----
