@@ -75,6 +75,7 @@ func main() {
 	//DebugRun = true //调试开关
 	//os.Setenv("NLS_LANG", "AMERICAN_AMERICA.ZHS16GBK") //ZHS16GBK
 	os.Setenv("NLS_LANG", "AMERICAN_AMERICA.AL32UTF8") //解决中文乱码
+	//SIMPLIFIED CHINESE_CHINA.US7ASCII //中文乱码
 	//conn := "teup/teup@//localhost:1521/ORCL"          //"TEUP/TEUP@ORCL"
 	conn := "teup/teup@ORCL"
 	//EZCONNECT 连接方式，只需要服务端配置监听文件，而不需要客户端配置tnsnames文件的连接串。
@@ -330,9 +331,10 @@ func main() {
 			}
 		}
 	}
-
+	uiGroup1.SetTitle("进度")
+	itmst := time.Now()
 	chMsg = make(chan string)
-	//多线程 并发执行
+	//多线程按顺序处理
 	for i := 0; i < 10; i++ {
 
 		if task1.query[i] == "" || task1.file[i] == "" || task1.dotype[i] == "" {
@@ -355,16 +357,27 @@ func main() {
 
 	}
 	//并发执行结果---等待执行完毕
+	var donecount int = 0
 	for i := 0; i < 10; i++ {
 		if task1.query[i] == "" || task1.file[i] == "" || task1.dotype[i] == "" {
 			continue
 		}
 		//消息管道同步状态,和任务数有关
 		result = <-chMsg
+		donecount = donecount + 1
+		itmen1 := time.Now()
+		ms2 := (itmen1.UnixNano() - itmst.UnixNano()) / 1e6
+		tmcost2 := fmt.Sprintf("已完成：%d 个任务，耗时：%v ms", donecount, NumberFormat(strconv.FormatInt(ms2, 10)))
+		uiGroup1.SetTitle("进度  " + tmcost2)
 	}
+
 	uiPrograss1.SetValue(100)
 	uiBtn1.SetText("  开始  ")
 	uiBtn1.Disable()
+	itmen := time.Now()
+	msall := (itmen.UnixNano() - itmst.UnixNano()) / 1e6
+	tmcost := fmt.Sprintf("任务耗时合计：%v ms", NumberFormat(strconv.FormatInt(msall, 10)))
+	uiGroup1.SetTitle("进度  " + tmcost)
 
 	//提示错误
 	var errmsg string
@@ -1118,6 +1131,7 @@ func setupUI() {
 	processbar := ui.NewProgressBar()
 	processbar.SetValue(-1)
 	uiPrograss1 = processbar
+
 	//表格
 	mh := newModelHandler()
 	model := ui.NewTableModel(mh)
@@ -1182,6 +1196,7 @@ func setupUI() {
 	})
 	boxs_2.Append(btnQuit, false)
 	uiBtn1 = btnQuit
+	uiGroup1 = container2
 	//组合
 	div.Append(boxs_1, true)
 	div.Append(boxs_2, false)
@@ -1319,3 +1334,4 @@ var uitable1 *ui.TableModel
 var uiPrograss1 *ui.ProgressBar
 var uiBtn1 *ui.Button
 var uiWindow1 *ui.Window
+var uiGroup1 *ui.Group
